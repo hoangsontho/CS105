@@ -3,9 +3,9 @@ import * as THREE from './js/three.module.js'
 import { OrbitControls } from './js/OrbitControls.js';
 import { TransformControls } from './js/TransformControls.js';
 import { TeapotBufferGeometry } from './js/TeapotBufferGeometry.js';
-import { TorusKnotBufferGeometry } from './js/three.module.js';
 
-// init var
+
+// variable declaration
 var camera, scene, renderer, control, orbit;
 var mesh, texture;
 var raycaster, light, PointLightHelper, meshplan;
@@ -25,3 +25,39 @@ var DodecahedronGeometry = new THREE.DodecahedronBufferGeometry(25);
 var IcosahedronGeometry = new THREE.IcosahedronBufferGeometry(25);
 var OctahedronGeometry =  new THREE.OctahedronBufferGeometry(25);
 var TetrahedronGeometry = new THREE.TetrahedronBufferGeometry(25);
+var TorusKnotGeometry = new THREE.TorusKnotGeometry(10,3,100,16);
+
+init();
+render();
+
+// function init
+function init() {
+    // init Scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x343A40);
+
+    // init Camera
+    camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth/window.innerHeight,
+        0.1,
+        10000
+    );
+
+    camera.position.x = 1;
+    camera.position.y = 50;
+    camera.position.z = 100;
+
+    camera.lookAt(new THREE.Vector3(0, 0 , 0));
+
+    // init Grid
+    var size = 300;
+    var divisions = 50;
+    var gridHelper = new THREE.GridHelper(size, divisions);
+        scene.add(gridHelper);
+
+    // init Renderer
+    var raycaster = new THREE.Raycaster();
+    renderer = new THREE.WebGL1Renderer();
+
+}
