@@ -54,10 +54,26 @@ function init() {
     var size = 300;
     var divisions = 50;
     var gridHelper = new THREE.GridHelper(size, divisions);
-        scene.add(gridHelper);
+    scene.add(gridHelper);
 
     // init Renderer
     var raycaster = new THREE.Raycaster();
-    renderer = new THREE.WebGL1Renderer();
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(windown.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.getElementById("rendering").addEventListener('MouseDown', onmousedown, false);
+    document.getElementById("rendering").appendChild(renderer.domElement);
+    window.addEventListener('resize', function() {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		renderer.setSize(width, height);
+		camera.aspect = width / height;
+		camera.updateProjectionMatrix();
+		render();
+	})
+
+
+
 
 }
