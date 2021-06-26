@@ -6,7 +6,7 @@ import { TeapotBufferGeometry } from './js/TeapotBufferGeometry.js';
 
 
 // variable declaration
-var camera, scene, renderer, control, orbit;
+var camera, scene, renderer, transform, orbit;
 var mesh, texture;
 var raycaster, light, PointLightHelper, meshplan;
 var type_material = 3;
@@ -38,15 +38,16 @@ function init() {
 
     // init Camera
     camera = new THREE.PerspectiveCamera(
-        75,
+        45,
         window.innerWidth/window.innerHeight,
-        0.1,
+        1,
         10000
     );
 
-    camera.position.x = 1;
-    camera.position.y = 50;
-    camera.position.z = 100;
+    var camera_position_x = 1;
+    var camera_position_y = 50;
+    var camera_position_z = 100;
+    camera.position.set(camera_position_x,camera_position_y, camera_position_z);
 
     camera.lookAt(new THREE.Vector3(0, 0 , 0));
 
@@ -62,9 +63,9 @@ function init() {
     renderer.setSize(windown.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    document.getElementById("rendering").addEventListener('MouseDown', onmousedown, false);
-    document.getElementById("rendering").appendChild(renderer.domElement);
-    window.addEventListener('resize', function() {
+    document.getElementById("Rendering").addEventListener('MouseDown', onmousedown, false);
+    document.getElementById("Rendering").appendChild(renderer.domElement);
+    window.addEventListener('Resize', function() {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 		renderer.setSize(width, height);
@@ -73,7 +74,24 @@ function init() {
 		render();
 	})
 
+    // init Orbit
+    /* Orbit controls allow the camera to orbit around a target. */
+    orbit = new OrbitControls(camera, renderer.domElement);
+    orbit.update();
+    orbit.addEventListener('Change', render);
 
-
+    /* TransformControls can be used to transform objects in 3D space. */
+    transform = new TransformControls(camera, renderer.domElement);
+    console.log(transform);
+    transform.addEventListener('Change', render);
+    transform.addEventListener('Dragging_to_change', function(event) {
+        orbit.enabled = !event.value;
+    });
 
 }
+
+// function render the scene
+function render() {
+    renderer.render(scene, camera);
+}
+
