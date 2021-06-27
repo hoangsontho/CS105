@@ -95,3 +95,62 @@ function render() {
     renderer.render(scene, camera);
 }
 
+// visualization Geometry
+function VisualGeo(id) {
+    mesh = scene.getObjectByName("Mesh1");
+	scene.remove(mesh);
+
+    switch(id) {
+        case 1 :
+            mesh = new THREE.Mesh(BoxGeometry, material);
+            break;
+
+        case 2 :
+            mesh = new THREE.Mesh(SphereGeometry, material);
+            break;
+
+        case 3 :
+            mesh = new THREE.Mesh(ConeGeometry, material);
+            break;
+
+        case 4 :
+            mesh = new THREE.Mesh(CylinderGeometry, material);
+            break;
+
+        case 5 :
+            mesh = new THREE.Mesh(TorusGeometry, material);
+            break;
+            
+        case 6 :
+            mesh = new THREE.Mesh(TorusKnotGeometry, material);
+            break;
+
+        case 7 :
+            mesh = new THREE.Mesh(TeapotGeometry, material);
+            break;
+
+        case 8 :
+            mesh = new THREE.Mesh(TetrahedronGeometry, material);
+            break;
+
+        case 9 :
+            mesh = new THREE.Mesh(OctahedronGeometry, material);
+            break;
+
+        case 10 :
+            mesh = new THREE.Mesh(DodecahedronGeometry, material);
+            break;
+
+        case 11 :
+            mesh = new THREE.Mesh(IcosahedronGeometry, material);
+            break;
+    }
+
+    mesh.name = "mesh1";
+    mesh.castShadow = true;
+	mesh.receiveShadow = true;
+	scene.add(mesh);
+	control_transform(mesh);
+	render();
+
+}
