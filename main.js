@@ -97,7 +97,7 @@ function render() {
 
 // visualization Geometry
 function VisualGeo(id) {
-    mesh = scene.getObjectByName("Mesh1");
+    mesh = scene.getObjectByName("Mesh");
 	scene.remove(mesh);
 
     switch(id) {
@@ -146,7 +146,7 @@ function VisualGeo(id) {
             break;
     }
 
-    mesh.name = "mesh1";
+    mesh.name = "Mesh";
     mesh.castShadow = true;
 	mesh.receiveShadow = true;
 	scene.add(mesh);
@@ -154,3 +154,43 @@ function VisualGeo(id) {
 	render();
 
 }
+window.VisualGeo = VisualGeo();
+
+// set fov, far, near
+// 1. Camera frustum vertical field of view, from bottom to top of view, in degrees. Default is 50.
+function setFov(value){
+    camera.fov = Number(value);
+    camera.updateProjectionMatrix();
+	render();
+}
+window.setFov = setFov;
+// 2. Camera frustum far plane. Default is 2000.
+function setFar(value) {
+	camera.far = Number(value);
+	camera.updateProjectionMatrix();
+	render();
+}
+window.setFar = setFar;
+// 3. Camera frustum near plane. Default is 0.1.
+function setNear(value) {
+	camera.near = Number(value);
+	camera.updateProjectionMatrix();
+	render();
+}
+window.setNear = setNear;
+
+// set Affine
+function Translate() {
+	control.setMode("translate");
+}
+window.Translate = Translate;
+
+function Rotate() {
+	control.setMode("rotate");
+}
+window.Rotate = Rotate;
+
+function Scale() {
+	control.setMode("scale");
+}
+window.Scale = Scale;
