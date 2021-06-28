@@ -30,7 +30,6 @@ var TorusKnotGeometry = new THREE.TorusKnotGeometry(10,3,100,16);
 init();
 render();
 
-// function init
 function init() {
     // init Scene
     scene = new THREE.Scene();
@@ -97,7 +96,7 @@ function render() {
 
 // visualization Geometry
 function VisualGeo(id) {
-    mesh = scene.getObjectByName("Mesh");
+    mesh = scene.getObjectByName("Mesh"); // name -- String to match to the children's Object3D.name property.
 	scene.remove(mesh);
 
     switch(id) {
@@ -156,7 +155,59 @@ function VisualGeo(id) {
 }
 window.VisualGeo = VisualGeo();
 
-// set fov, far, near
+// visualize Basic 3D model with points, line and solid
+function CloneMesh(emulation_mesh) {
+	mesh.name = emulation_mesh.name;
+	mesh.position.set(emulation_mesh.position.x, emulation_mesh.position.y, emulation_mesh.position.z);
+	mesh.rotation.set(emulation_mesh.rotation.x, emulation_mesh.rotation.y, emulation_mesh.rotation.z);
+	mesh.scale.set(emulation_mesh.scale.x, emulation_mesh.scale.y, emulation_mesh.scale.z);
+	mesh.castShadow = true;
+	mesh.receiveShadow = true;
+	scene.add(mesh);
+	control_transform(mesh);
+}
+function SetMaterial(mat) {
+	mesh = scene.getObjectByName("Mesh");
+	light = scene.getObjectByName("Point_Light");
+	type_material = mat;
+	if (mesh) {
+		const emulation_mesh = mesh.clone();
+		scene.remove(mesh);
+
+		switch (type_material) {
+			case 1:
+				material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+				mesh = new THREE.Points(emulation_mesh.geometry, material);
+				CloneMesh(emulation_mesh);
+				break;
+			case 2:
+				material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
+				mesh = new THREE.Mesh(emulation_mesh.geometry, material);
+				CloneMesh(emulation_mesh);
+				break;
+			case 3:
+				if (!light)
+					material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+				else
+					material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+				mesh = new THREE.Mesh(emulation_mesh.geometry, material);
+				CloneMesh(emulation_mesh);
+				break;
+			case 4:
+				if (!light)
+					material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+				else
+					material = new THREE.MeshLambertMaterial({ map: texture, transparent: true });
+				mesh = new THREE.Mesh(emulation_mesh.geometry, material);
+				CloneMesh(emulation_mesh);
+				break;
+		}
+		render();
+	}
+}
+window.SetMaterial = SetMaterial
+
+// init fov, far, near
 // 1. Camera frustum vertical field of view, from bottom to top of view, in degrees. Default is 50.
 function setFov(value){
     camera.fov = Number(value);
@@ -179,18 +230,47 @@ function setNear(value) {
 }
 window.setNear = setNear;
 
-// set Affine
+// init Affine
 function Translate() {
-	control.setMode("translate");
+	transform.setMode("Translate");
 }
 window.Translate = Translate;
 
 function Rotate() {
-	control.setMode("rotate");
+	transform.setMode("Rotate");
 }
 window.Rotate = Rotate;
 
 function Scale() {
-	control.setMode("scale");
+	transform.setMode("Scale");
 }
 window.Scale = Scale;
+
+// init control transform on key down
+function control_transform(mesh) {
+	transform.attach(mesh);
+	scene.add(control);
+	console.log(control);
+	window.addEventListener('onKeyDown', function (event) {
+		switch (event.keyCode) {
+			case 82: // R
+				Rotate(); break;
+			case 83: // S
+				Scale(); break;
+            case 84: // T
+				Translate(); break;
+			case 88: // X
+				transform.showX = !transform.showX; break;
+			case 89: // Y
+				transform.showY = !transform.showY; break;
+			case 90: // Z
+				transform.showZ = !transform.showZ; break;
+			case 76: // L
+				SetPointLight(); break;
+			case 32: // Spacebar
+				RemoveLight(); break;
+		}
+	});
+}
+
+//
