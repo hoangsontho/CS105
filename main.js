@@ -166,6 +166,7 @@ function CloneMesh(emulation_mesh) {
 	scene.add(mesh);
 	control_transform(mesh);
 }
+
 function SetMaterial(mat) {
 	mesh = scene.getObjectByName("Mesh");
 	light = scene.getObjectByName("Point_Light");
@@ -248,9 +249,10 @@ window.Scale = Scale;
 
 // init control transform on key down
 function control_transform(mesh) {
+
 	transform.attach(mesh);
-	scene.add(control);
-	console.log(control);
+	scene.add(transform);
+	console.log(transform);
 	window.addEventListener('onKeyDown', function (event) {
 		switch (event.keyCode) {
 			case 82: // R
@@ -273,4 +275,53 @@ function control_transform(mesh) {
 	});
 }
 
-//
+// set light
+function SetPointLight() {
+	light = scene.getObjectByName("Point_Light");
+
+	if (!light) {
+		{
+            const planeSize = 400;
+			const loader = new THREE.TextureLoader();
+			const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
+			const planeMat = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,}); // include front, back side
+			meshplan = new THREE.Mesh(planeGeo, planeMat);
+			meshplan.receiveShadow = true;
+			meshplan.rotation.x = Math.PI * -0.5;
+			meshplan.position.y += 0.5;
+            scene.add(meshplan);
+        }
+
+		const color = '0xffffff';
+		const intensity = 2;
+		light = new THREE.PointLight(color, intensity);
+		light.castShadow = true;
+		light.position.set(50, 70, 50);
+		light.name = "Point_Light";
+		scene.add(light);
+
+		control_transform(light);
+		if (type_material == 3 || type_material == 4) {
+			SetMaterial(type_material);
+		}
+		
+		const sphereSize = 2;
+		PointLightHelper = new THREE.PointLightHelper(light,sphereSize);
+		PointLightHelper.name = "Point_Light_Helper";
+		scene.add(PointLightHelper);
+		render();
+	}
+}
+window.SetPointLight = SetPointLight;
+
+function RemoveLight() {
+
+	scene.remove(light);
+	scene.remove(PointLightHelper);
+	scene.remove(meshplan);
+	if (type_material == 3 || type_material == 4) {
+		SetMaterial(type_material);
+	}
+	render();
+}
+window.RemoveLight = RemoveLight;
