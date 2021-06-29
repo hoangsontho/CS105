@@ -14,7 +14,7 @@ var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
 material.needsUpdate = true;
 var mouse = new THREE.Vector2();
 
-// Geometry
+// create Geometry
 var BoxGeometry = new THREE.BoxGeometry(30, 30, 30, 40, 40, 40);
 var SphereGeometry = new THREE.SphereGeometry(20, 20, 20);
 var ConeGeometry = new THREE.ConeGeometry(18, 30, 32, 20);
@@ -47,7 +47,7 @@ function init() {
     var camera_position_y = 50;
     var camera_position_z = 100;
     camera.position.set(camera_position_x,camera_position_y, camera_position_z);
-
+	//  A 3D vector is an ordered triplet of numbers (labeled x, y, and z)
     camera.lookAt(new THREE.Vector3(0, 0 , 0));
 
     // init Grid
@@ -57,12 +57,13 @@ function init() {
     scene.add(gridHelper);
 
     // init Renderer
+	// Raycasting is used for mouse picking
     var raycaster = new THREE.Raycaster();
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(windown.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    document.getElementById("Rendering").addEventListener('MouseDown', onmousedown, false);
+    document.getElementById("Rendering").addEventListener('MouseDown', onMouseDown, false);
     document.getElementById("Rendering").appendChild(renderer.domElement);
     window.addEventListener('Resize', function() {
 		var width = window.innerWidth;
@@ -247,34 +248,6 @@ function Scale() {
 }
 window.Scale = Scale;
 
-// init control transform on key down
-function control_transform(mesh) {
-
-	transform.attach(mesh);
-	scene.add(transform);
-	console.log(transform);
-	window.addEventListener('onKeyDown', function (event) {
-		switch (event.keyCode) {
-			case 82: // R
-				Rotate(); break;
-			case 83: // S
-				Scale(); break;
-            case 84: // T
-				Translate(); break;
-			case 88: // X
-				transform.showX = !transform.showX; break;
-			case 89: // Y
-				transform.showY = !transform.showY; break;
-			case 90: // Z
-				transform.showZ = !transform.showZ; break;
-			case 76: // L
-				SetPointLight(); break;
-			case 32: // Spacebar
-				RemoveLight(); break;
-		}
-	});
-}
-
 // set light
 function SetPointLight() {
 	light = scene.getObjectByName("Point_Light");
@@ -307,7 +280,7 @@ function SetPointLight() {
 		
 		const sphereSize = 2;
 		PointLightHelper = new THREE.PointLightHelper(light,sphereSize);
-		PointLightHelper.name = "Point_Light_Helper";
+		PointLightHelper.name = "PointLightHelper";
 		scene.add(PointLightHelper);
 		render();
 	}
@@ -325,3 +298,95 @@ function RemoveLight() {
 	render();
 }
 window.RemoveLight = RemoveLight;
+
+// Texture 
+function SetTexture(url) {
+	mesh = scene.getObjectByName("Mesh");
+	if (mesh) {
+		texture = new THREE.TextureLoader().load(url, render);
+		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+		SetMaterial(4);
+	}
+}
+window.SetTexture = SetTexture;
+
+// Animation
+var mesh = new THREE.Mesh();
+var animation_1, animation_2;
+
+function Animation_1() {
+	cancelAnimationFrame(animation_1);
+	mesh.rotation.x += 0.01;
+	render();
+	animation_1 = requestAnimationFrame(Animation_1);
+}
+window.Animation1 = Animation_1;
+
+function Animation_2() {
+	cancelAnimationFrame(animation_2);
+	mesh.rotation.y += 0.01;
+	render();
+	animation_2 = requestAnimationFrame(Animation_2);
+}
+window.Animation2 = Animation_2;
+
+// init control transform on key down
+function control_transform(mesh) {
+
+	transform.attach(mesh);
+	scene.add(transform);
+	console.log(transform);
+	window.addEventListener('onKeyDown', function (event) {
+		switch (event.keyCode) {
+			case 82: // R
+				Rotate(); break;
+			case 83: // S
+				Scale(); break;
+            case 84: // T
+				Translate(); break;
+			case 88: // X
+				transform.showX = !transform.showX; break;
+			case 89: // Y
+				transform.showY = !transform.showY; break;
+			case 90: // Z
+				transform.showZ = !transform.showZ; break;
+			case 76: // L
+				SetPointLight(); break;
+			case 32: // Spacebar
+				RemoveLight(); break;
+		}
+	});
+}
+
+// event Mouse 
+function onMouseDown(event) {
+	
+	event.preventDefault();
+	// calculate mouse position in normalized device coordinates
+	// (-1 to +1) for both components
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+	
+	// update the picking ray with the camera and mouse position
+	raycaster.setFromCamera(mouse, camera);
+	// calculate objects intersecting the picking ray
+	var intersects = raycaster.intersectObjects(scene.children);
+	let check_obj = 0;
+	if (intersects.length > 0) {
+		var obj;
+		for (obj in intersects) {
+			if (intersects[obj].object.name == "Mesh") {
+				check_obj = 1;
+				control_transform(intersects[obj].object);
+				break;
+			}
+			if (intersects[obj].object.type == "PointLightHelper") {
+				check_obj = 1;
+				control_transform(light);
+				break;
+			}
+		}
+	}
+	if (check_obj == 0 && transform.dragging == 0) transform.detach();
+	render();
+}
