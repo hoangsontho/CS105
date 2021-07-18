@@ -12,7 +12,6 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css" >
 
-	<!-- <script type="module" src="./index.js" ></script> -->
 	
 </head>
 
@@ -46,8 +45,7 @@
 					<a class="dropdown-item" href="#" onclick="RenderGeo(9);">Octahedron</a>
 					<a class="dropdown-item" href="#" onclick="RenderGeo(10);">Tetrahedron</a>
 					<a class="dropdown-item" href="#" onclick="RenderGeo(11);">Lathe</a>
-
-					
+					<a class="dropdown-item" href="#" onclick="RenderGeo(12);">TorusKnot</a>
 					
 					<div class="dropdown-divider"></div>
 					
@@ -89,7 +87,7 @@
 				  <div class="dropdown-item">
 					<input type="file" accept="image/*" id="texture" style="display: none;"
 						onchange="SetTexture(window.URL.createObjectURL(this.files[0]))" />
-					<a style="color:black" href="#"  onclick="Uploadimage();">Texture</a>
+					<a style="color:black" href="#"  onclick="Uploadimage();">Select Texture</a>
 				</div>
 				  <div class="dropdown-divider"></div>
 				  
@@ -104,27 +102,32 @@
 
 					<div class="dropdown-item">
 						
-							<input type="checkbox" id="animation1">
-							<label for="animation1">Animation 1 </label>
+							<input type="checkbox" id="Animate_1">
+							<label for="Animate_1">Animation 1 </label>
 						
-
 					</div>
 					<div class="dropdown-item">
 						
-						<input type="checkbox" id="animation2">
-						<label for="animation2">Animation 2 </label>
+						<input type="checkbox" id="Animate_2">
+						<label for="Animate_2">Animation 2 </label>
 					
 					</div>
 					<div class="dropdown-item">
 						
-						<input type="checkbox" id="animation3">
-						<label for="animation3">Animation 3 </label>
+						<input type="checkbox" id="Animate_3">
+						<label for="Animate_3">Animation 3 </label>
 					
 					</div>
 					<div class="dropdown-item">
 						
-						<input type="checkbox" id="animation4">
-						<label for="animation4">Animation 4 </label>
+						<input type="checkbox" id="Animate_4">
+						<label for="Animate_4">Animation 4 </label>
+					
+					</div>
+					<div class="dropdown-item">
+						
+						<input type="checkbox" id="Animate_5">
+						<label for="Animate_5">Animation 5 </label>
 					
 					</div>
 					<a class="dropdown-item" href="#" onclick="ResetAnimation()">Reset</a>
@@ -136,120 +139,6 @@
 		</div>
 	  </nav>
 	<div class="wrapper d-flex align-items-stretch"></div>
-		<!-- <nav id="sidebar">
-			<div class="custom-menu">
-				<button type="button" id="sidebarCollapse" class="btn btn-danger">
-					<i class="fa fa-bars"></i>
-					<span class="sr-only">Toggle Menu</span>
-				</button>
-			</div>
-			<div class="p-4 pt-5">
-				<h1><a href="index.html" class="logo">Tuấn Trung Thọ</a></h1>
-				<ul class="list-unstyled components mb-5">
-					<li>
-						<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
-							class="dropdown-toggle">Geometry</a>
-						<ul class="collapse list-unstyled" id="homeSubmenu">
-							<li>
-								<a href="#" onclick="RenderGeo(1);">Cube</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(2);">Sphere</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(3);">Cone</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(4);">Cylinder</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(5);">Torus</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(6);">Teapot</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(7);">Icosahedron</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(8);">Dodecahedron</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(9);">Octahedron</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(10);">Tetrahedron</a>
-							</li>
-							<li>
-								<a href="#" onclick="RenderGeo(11);">Lathe</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
-							class="dropdown-toggle">Surface</a>
-						<ul class="collapse list-unstyled" id="pageSubmenu">
-							<li>
-								<a href="#" onclick="SetMaterial(1);">Point</a>
-							</li>
-							<li>
-								<a href="#" onclick="SetMaterial(2);">Line</a>
-							</li>
-							<li>
-								<a href="#" onclick="SetMaterial(3);">Solid</a>
-							</li>
-							
-						</ul>
-					</li>
-					<li>
-						<a href="#colorSubmenu" data-toggle="collapse" aria-expanded="false"
-							class="dropdown-toggle">Color</a>
-						<ul class="collapse list-unstyled" id="colorSubmenu">
-							<li id="demo">
-								<input id="demo-input" type="text" value="rgb(255, 128, 0)" />
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="#lightSubmenu" data-toggle="collapse" aria-expanded="false"
-							class="dropdown-toggle">Light</a>
-						<ul class="collapse list-unstyled" id="lightSubmenu">
-							<li>
-								<a href="#" onclick="SetPointLight()">Light</a>
-							</li>
-							<li>
-								<a href="#" onclick="RemoveLight()">Remove Light</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="#animationSubmenu" data-toggle="collapse" aria-expanded="false"
-							class="dropdown-toggle">Animation</a>
-						<ul class="collapse list-unstyled" id="animationSubmenu">
-							<li class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="animation1">
-								<label class="custom-control-label" for="animation1">#1</label>
-							</li>
-							<li class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="animation2">
-								<label class="custom-control-label" for="animation2">#2</label>
-							</li>
-							<li>
-								<a href="#" onclick="Animation3()">Animation 3</a>
-							</li>
-							<li>
-								<a href="#" onclick="Animation4()">Animation 4</a>
-							</li>
-							<li>
-								<a href="#" onclick="ResetAnimation()">Reset</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-
-			</div>
-		</nav> -->
-
 		<!-- Page Content  -->
 		<div id="content">
 			<div class="mt-5">
@@ -335,39 +224,48 @@
 	<script src="js/bootstrap-colorpicker.js"></script>
 	
 	<script>
-		$('#animation1').change(function () {
+		$('#Animate_1').change(function () {
 			if ($(this).prop('checked')) {
-				Animation1();
+				Animate_1();
 			}
 			else {
-				RemoveAnimation1();
+				RemoveAnimate_1();
 			}
 		});
 
-		$('#animation2').change(function () {
+		$('#Animate_2').change(function () {
 			if ($(this).prop('checked')) {
-				Animation2();
+				Animate_2();
 			}
 			else {
-				RemoveAnimation2();
+				RemoveAnimate_2();
 			}
 		});
 
-		$('#animation3').change(function () {
+		$('#Animate_3').change(function () {
 			if ($(this).prop('checked')) {
-				Animation3();
+				Animate_3();
 			}
 			else {
-				RemoveAnimation3();
+				RemoveAnimate_3();
 			}
 		});
 
-		$('#animation4').change(function () {
+		$('#Animate_4').change(function () {
 			if ($(this).prop('checked')) {
-				Animation4();
+				Animate_4();
 			}
 			else {
-				RemoveAnimation4();
+				RemoveAnimate_4();
+			}
+		});
+
+		$('#Animate_5').change(function () {
+			if ($(this).prop('checked')) {
+				Animate_5();
+			}
+			else {
+				RemoveAnimate_5();
 			}
 		});
 
@@ -389,8 +287,8 @@
 		});
 
 		function ResetAnimation() {
-			document.getElementById("animation1").checked = false;
-			document.getElementById("animation2").checked = false;
+			document.getElementById("Animate_1").checked = false;
+			document.getElementById("Animate_2").checked = false;
 			RemoveAllAnimation();
   		};
 

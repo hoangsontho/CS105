@@ -1,17 +1,20 @@
+// Import lib
 import * as THREE from './js/three.module.js';
 import { OrbitControls } from './js/OrbitControls.js';
 import { TransformControls } from './js/TransformControls.js';
 import { TeapotBufferGeometry } from './js/TeapotBufferGeometry.js';
 
+// Init variable
 var camera, scene, renderer, control, orbit;
 var mesh, texture;
 var raycaster, light, PointLightHelper, meshplan;
 var type_material = 3;
-var color_material = 'rgb(255, 128, 0)';
+var color_material = 'rgb(255, 255, 0)';
 var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
 material.needsUpdate = true;
 var mouse = new THREE.Vector2();
 
+// Init point for LatheGeometry
 const points = [];
 for ( let i = 0; i < 10; i ++ ) {
 	points.push( new THREE.Vector2( Math.sin( i * 0.2 ) * 10 + 5, ( i - 5 ) * 2 ) );
@@ -29,6 +32,7 @@ var IcosahedronGeometry = new THREE.IcosahedronBufferGeometry(25);
 var OctahedronGeometry =  new THREE.OctahedronBufferGeometry(25);
 var TetrahedronGeometry = new THREE.TetrahedronBufferGeometry(25);
 var LatheGeometry = new THREE.LatheGeometry(points);
+var TorusKnotGeometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
 
 init();
 render();
@@ -182,6 +186,9 @@ function RenderGeo(id) {
 		case 11:
 			mesh = new THREE.Mesh(LatheGeometry, material);
 			break;
+		case 12:
+			mesh = new THREE.Mesh(TorusKnotGeometry, material);
+			break;
 		
 	}
     mesh.name = "mesh1";
@@ -279,6 +286,7 @@ function SetPointLight() {
 		light.castShadow = true;
 		light.position.set(0, 70, 0);
 		light.name = "pl1";
+
 		scene.add(light);
 		control_transform(light);
 		if (type_material == 3 || type_material == 4) {
@@ -344,33 +352,42 @@ window.SetTexture = SetTexture;
 
 // 6. Animation
 var mesh = new THREE.Mesh();
-var id_animation1, id_animation2, id_animation3, id_animation4;
+var animate1, animate2, animate3, animate4, animate5;
 
-function Animation1() {
-	cancelAnimationFrame(id_animation1);
+function Animate_1() {
+	cancelAnimationFrame(animate1);
 	mesh.rotation.x += 0.01;
 	render();
-	id_animation1 = requestAnimationFrame(Animation1);
+	animate1 = requestAnimationFrame(Animate_1);
 }
-window.Animation1 = Animation1;
+window.Animate_1 = Animate_1;
 
-function Animation2() {
-	cancelAnimationFrame(id_animation2);
+function Animate_2() {
+	cancelAnimationFrame(animate2);
 	mesh.rotation.y += 0.01;
 	render();
-	id_animation2 = requestAnimationFrame(Animation2);
+	animate2 = requestAnimationFrame(Animate_2);
 }
-window.Animation2 = Animation2;
+window.Animate_2 = Animate_2;
+
+function Animate_3() {
+	cancelAnimationFrame(animate3);
+	mesh.rotation.x += 0.01;
+	mesh.rotation.y += 0.01;
+	render();
+	animate3 = requestAnimationFrame(Animate_3);
+}
+window.Animate_3 = Animate_3;
 
 const position_x = mesh.position.x;
 const position_y = mesh.position.y;
-var kt = 0;
-function Animation3() {
-	cancelAnimationFrame(id_animation4);
-	cancelAnimationFrame(id_animation3);
+var check = 0;
+function Animate_4() {
+	cancelAnimationFrame(animate5);
+	cancelAnimationFrame(animate4);
 	var positionx = mesh.position.x;
 	var positiony = mesh.position.y;
-	if (positiony < position_y + 30 && kt == 0)
+	if (positiony < position_y + 30 && check == 0)
 	{
 		mesh.position.y += 0.3;
 	}
@@ -378,69 +395,75 @@ function Animation3() {
 	{
 		mesh.position.x += 0.3;
 	}
-	if (positiony > position_y + 30 && positionx > position_x + 30) kt += 1;
-	if (kt > 1 && positiony > position_y)
+	if (positiony > position_y + 30 && positionx > position_x + 30) check += 1;
+	if (check > 1 && positiony > position_y)
 	{
 		mesh.position.y -= 0.3;
 	}
-	if (kt > 1 && positiony < position_y && positionx > position_x)
+	if (check > 1 && positiony < position_y && positionx > position_x)
 	{
 		mesh.position.x -= 0.3;
 	}
-	if (positiony < position_y && positionx < position_x) kt = 0;
+	if (positiony < position_y && positionx < position_x) check = 0;
 	mesh.rotation.y += 0.01;
 	render();
-	id_animation3 = requestAnimationFrame(Animation3);
+	animate4 = requestAnimationFrame(Animate_4);
 }
-window.Animation3 = Animation3;
+window.Animate_4 = Animate_4;
 
-var kt2 = 0;
-function Animation4() {
-	cancelAnimationFrame(id_animation3);
-	cancelAnimationFrame(id_animation4);
+var check2 = 0;
+function Animate_5() {
+	cancelAnimationFrame(animate4);
+	cancelAnimationFrame(animate5);
 	var positiony = mesh.position.y;
-	if (positiony < position_y + 30 && kt2 == 0) 
+	if (positiony < position_y + 30 && check2 == 0) 
 	{ 
 		mesh.position.y += 0.3;
 		mesh.rotation.y += 0.05;
 	}
-	if (positiony > position_y + 30) kt2 += 1;
-	if (kt2 > 1 && positiony > position_y) 
+	if (positiony > position_y + 30) check2 += 1;
+	if (check2 > 1 && positiony > position_y) 
 	{ 
 		mesh.position.y -= 0.3;
 		mesh.rotation.y += 0.05;
 	}
-	if (positiony < position_y) kt2 = 0;
+	if (positiony < position_y) check2 = 0;
 	render();
-	id_animation4 = requestAnimationFrame(Animation4);
+	animate5 = requestAnimationFrame(Animate_5);
 }
-window.Animation4 = Animation4;
+window.Animate_5 = Animate_5;
 
-function RemoveAnimation1() {
-	cancelAnimationFrame(id_animation1);
+function RemoveAnimate_1() {
+	cancelAnimationFrame(animate1);
 }
-window.RemoveAnimation1 = RemoveAnimation1;
+window.RemoveAnimate_1 = RemoveAnimate_1;
 
-function RemoveAnimation2() {
-	cancelAnimationFrame(id_animation2);
+function RemoveAnimate_2() {
+	cancelAnimationFrame(animate2);
 }
-window.RemoveAnimation2 = RemoveAnimation2;
+window.RemoveAnimate_2 = RemoveAnimate_2;
 
-function RemoveAnimation3() {
-	cancelAnimationFrame(id_animation3);
+function RemoveAnimate_3() {
+	cancelAnimationFrame(animate3);
 }
-window.RemoveAnimation3 = RemoveAnimation3;
+window.RemoveAnimate_3 = RemoveAnimate_3;
 
-function RemoveAnimation4() {
-	cancelAnimationFrame(id_animation4);
+function RemoveAnimate_4() {
+	cancelAnimationFrame(animate3);
 }
-window.RemoveAnimation4 = RemoveAnimation4;
+window.RemoveAnimate_4 = RemoveAnimate_4;
+
+function RemoveAnimate_5() {
+	cancelAnimationFrame(animate4);
+}
+window.RemoveAnimate_5 = RemoveAnimate_5;
 
 function RemoveAllAnimation() {
-	cancelAnimationFrame(id_animation1);
-	cancelAnimationFrame(id_animation2);
-	cancelAnimationFrame(id_animation3);
-	cancelAnimationFrame(id_animation4);
+	cancelAnimationFrame(animate1);
+	cancelAnimationFrame(animate2);
+	cancelAnimationFrame(animate3);
+	cancelAnimationFrame(animate4);
+	cancelAnimationFrame(animate5);
 	mesh.rotation.set(0, 0, 0);
 	render();
 }
