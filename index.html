@@ -59,6 +59,7 @@
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item"  href="#" onclick="SetPointLight()">Light</a>
 					<a class="dropdown-item" href="#" onclick="RemoveLight()">Remove Light</a>
+					<div id="color-light" class="dropdown-item" />
 				</div>
 				
 			</li>
@@ -71,7 +72,7 @@
 			  </a>
 			  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				  <div id="demo" >
-					<input id="demo-input" type="text" value="rgb(255, 128, 0)" />
+					
 				  </div>
 
 			  </div>
@@ -278,10 +279,13 @@
 				SetMaterial(0,e.color.toString());
 			});;
 
-			// $('#demo-input').on('colorpickerChange', function (e) {
-			// 	console.log("sadsds")
-			// 	SetMaterial(0,e.color.toString());
-			// });
+			$('#color-light').colorpicker({
+				popover: false,
+				inline: true,
+				container: '#color-light'
+			}).on('colorpickerChange', function (e) {
+				SetPointLight(e.color.toString());
+			});;
 
 			RenderGeo(1)
 		});

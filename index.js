@@ -76,7 +76,6 @@ function init() {
 	orbit.update();
 	orbit.addEventListener('change', render);
 	control = new TransformControls(camera, renderer.domElement);
-	console.log(control)
 	control.addEventListener('change', render);
 	control.addEventListener('dragging-changed', function (event) {
 		orbit.enabled = !event.value;
@@ -102,7 +101,6 @@ function SetMaterial(mat, color) {
 	mesh = scene.getObjectByName("mesh1");
 	light = scene.getObjectByName("pl1");
 	if (mat != 0) {
-		console.log(type_material)
 		type_material = mat;
 	}
 	
@@ -127,10 +125,10 @@ function SetMaterial(mat, color) {
 				CloneMesh(dummy_mesh);
 				break;
 			case 3:
-				if (!light)
+				// if (!light)
 					material = new THREE.MeshBasicMaterial({ color: color_material });
-				else
-					material = new THREE.MeshPhongMaterial({ color: color_material });
+				// else
+				// 	material = new THREE.MeshPhongMaterial({ color: color_material });
 				mesh = new THREE.Mesh(dummy_mesh.geometry, material);
 				CloneMesh(dummy_mesh);
 				break;
@@ -241,7 +239,6 @@ window.Scale = Scale;
 function control_transform(mesh) {
 	control.attach(mesh);
 	scene.add(control);
-	console.log(control);
 	window.addEventListener('keydown', function (event) {
 		switch (event.keyCode) {
 			case 84: // T
@@ -265,38 +262,34 @@ function control_transform(mesh) {
 }
 
 // 4.Light
-function SetPointLight() {
-	light = scene.getObjectByName("pl1");
-
-	if (!light) {
-        {
-            const planeSize = 400;
-			const loader = new THREE.TextureLoader();
-			const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
-			const planeMat = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,});
-			meshplan = new THREE.Mesh(planeGeo, planeMat);
-			meshplan.receiveShadow = true;
-			meshplan.rotation.x = Math.PI * -.5;
-			meshplan.position.y += 0.5;
-            scene.add(meshplan);
-        }
-		const color = '#FFFFFF';
-		const intensity = 2;
-		light = new THREE.PointLight(color, intensity);
-		light.castShadow = true;
-		light.position.set(0, 70, 0);
-		light.name = "pl1";
-
-		scene.add(light);
-		control_transform(light);
-		if (type_material == 3 || type_material == 4) {
-			SetMaterial(type_material);
-		}
-		PointLightHelper = new THREE.PointLightHelper(light);
-		PointLightHelper.name = "plh1";
-		scene.add(PointLightHelper);
-		render();
+function SetPointLight(color ='#FFFFFF') {
+	RemoveLight();
+	{
+		const planeSize = 400;
+		const loader = new THREE.TextureLoader();
+		const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
+		const planeMat = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,});
+		meshplan = new THREE.Mesh(planeGeo, planeMat);
+		meshplan.receiveShadow = true;
+		meshplan.rotation.x = Math.PI * -.5;
+		meshplan.position.y += 0.5;
+		scene.add(meshplan);
 	}
+	const intensity = 2;
+	light = new THREE.PointLight(color, intensity);
+	light.castShadow = true;
+	light.position.set(0, 70, 0);
+	light.name = "pl1";
+
+	scene.add(light);
+	control_transform(light);
+	if (type_material == 3 || type_material == 4) {
+		SetMaterial(type_material);
+	}
+	PointLightHelper = new THREE.PointLightHelper(light);
+	PointLightHelper.name = "plh1";
+	scene.add(PointLightHelper);
+	render();
 }
 window.SetPointLight = SetPointLight;
 
