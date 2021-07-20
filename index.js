@@ -12,6 +12,7 @@ var type_material = 3;
 var color_material = 'rgb(255, 255, 0)';
 var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
 material.needsUpdate = true;
+
 var mouse = new THREE.Vector2();
 
 // Init point for LatheGeometry
@@ -51,7 +52,7 @@ function init() {
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 	// Grid
-    var size = 300;
+    var size = 400;
     var divisions = 50;
     var gridHelper = new THREE.GridHelper(size, divisions, 0x888888);
 	scene.add(gridHelper);
@@ -115,18 +116,18 @@ function SetMaterial(mat, color) {
 
 		switch (type_material) {
 			case 1:
-				material = new THREE.PointsMaterial({ color: color_material, size: 0.5 });
+				material = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.3 });
 				mesh = new THREE.Points(dummy_mesh.geometry, material);
 				CloneMesh(dummy_mesh);
 				break;
 			case 2:
-				material = new THREE.MeshBasicMaterial({ color: color_material, wireframe: true });
+				material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, wireframe: true });
 				mesh = new THREE.Mesh(dummy_mesh.geometry, material);
 				CloneMesh(dummy_mesh);
 				break;
 			case 3:
 				// if (!light)
-					material = new THREE.MeshBasicMaterial({ color: color_material });
+					material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
 				// else
 				// 	material = new THREE.MeshPhongMaterial({ color: color_material });
 				mesh = new THREE.Mesh(dummy_mesh.geometry, material);
@@ -282,6 +283,7 @@ function SetPointLight(color ='#FFFFFF') {
 	light.name = "pl1";
 
 	scene.add(light);
+
 	control_transform(light);
 	if (type_material == 3 || type_material == 4) {
 		SetMaterial(type_material);
@@ -289,6 +291,7 @@ function SetPointLight(color ='#FFFFFF') {
 	PointLightHelper = new THREE.PointLightHelper(light);
 	PointLightHelper.name = "plh1";
 	scene.add(PointLightHelper);
+
 	render();
 }
 window.SetPointLight = SetPointLight;
@@ -345,7 +348,7 @@ window.SetTexture = SetTexture;
 
 // 6. Animation
 var mesh = new THREE.Mesh();
-var animate1, animate2, animate3, animate4, animate5;
+var animate1, animate2, animate3, animate4, animate5, animate6;
 
 function Animate_1() {
 	cancelAnimationFrame(animate1);
@@ -442,12 +445,12 @@ function RemoveAnimate_3() {
 window.RemoveAnimate_3 = RemoveAnimate_3;
 
 function RemoveAnimate_4() {
-	cancelAnimationFrame(animate3);
+	cancelAnimationFrame(animate4);
 }
 window.RemoveAnimate_4 = RemoveAnimate_4;
 
 function RemoveAnimate_5() {
-	cancelAnimationFrame(animate4);
+	cancelAnimationFrame(animate5);
 }
 window.RemoveAnimate_5 = RemoveAnimate_5;
 
@@ -457,6 +460,7 @@ function RemoveAllAnimation() {
 	cancelAnimationFrame(animate3);
 	cancelAnimationFrame(animate4);
 	cancelAnimationFrame(animate5);
+
 	mesh.rotation.set(0, 0, 0);
 	render();
 }
