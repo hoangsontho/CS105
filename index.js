@@ -9,7 +9,7 @@ var camera, scene, renderer, control, orbit;
 var mesh, texture;
 var raycaster, light, PointLightHelper, meshplan;
 var type_material = 3;
-var color_material = 'rgb(255, 255, 0)';
+var color_material = 'rgb(255, 255, 255)';
 var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
 material.needsUpdate = true;
 
@@ -266,7 +266,7 @@ function control_transform(mesh) {
 function SetPointLight(color ='#FFFFFF') {
 	RemoveLight();
 	{
-		const planeSize = 400;
+		const planeSize = 600;
 		const loader = new THREE.TextureLoader();
 		const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
 		const planeMat = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,});
