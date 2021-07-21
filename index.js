@@ -105,9 +105,9 @@ function SetMaterial(mat, color) {
 		type_material = mat;
 	}
 	
-	// if (color) {
-	// 	color_material = color;
-	// }
+	 if (color) {
+	 	color_material = color;
+	 }
 
 
 	if (mesh) {
@@ -127,7 +127,7 @@ function SetMaterial(mat, color) {
 				break;
 			case 3:
 				if (!light)
-					material = new THREE.MeshBasicMaterial({ color: mesh.material.color_material });
+					material = new THREE.MeshBasicMaterial({ color: color_material });
 				else
 				 	material = new THREE.MeshPhongMaterial({ color: mesh.material.color_material });
 				mesh = new THREE.Mesh(dummy_mesh.geometry, material);
