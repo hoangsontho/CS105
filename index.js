@@ -105,9 +105,9 @@ function SetMaterial(mat, color) {
 		type_material = mat;
 	}
 	
-	if (color) {
-		color_material = color;
-	}
+	// if (color) {
+	// 	color_material = color;
+	// }
 
 
 	if (mesh) {
@@ -116,20 +116,20 @@ function SetMaterial(mat, color) {
 
 		switch (type_material) {
 			case 1:
-				material = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.3 });
+				material = new THREE.PointsMaterial({ color: color_material, size: 0.3 });
 				mesh = new THREE.Points(dummy_mesh.geometry, material);
 				CloneMesh(dummy_mesh);
 				break;
 			case 2:
-				material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, wireframe: true });
+				material = new THREE.MeshBasicMaterial({ color: color_material, wireframe: true });
 				mesh = new THREE.Mesh(dummy_mesh.geometry, material);
 				CloneMesh(dummy_mesh);
 				break;
 			case 3:
-				// if (!light)
-					material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
-				// else
-				// 	material = new THREE.MeshPhongMaterial({ color: color_material });
+				if (!light)
+					material = new THREE.MeshBasicMaterial({ color: mesh.material.color_material });
+				else
+				 	material = new THREE.MeshPhongMaterial({ color: mesh.material.color_material });
 				mesh = new THREE.Mesh(dummy_mesh.geometry, material);
 				CloneMesh(dummy_mesh);
 				break;
