@@ -237,6 +237,7 @@ function Scale() {
 }
 window.Scale = Scale;
 
+// Control onKeydown
 function control_transform(mesh) {
 	control.attach(mesh);
 	scene.add(control);
